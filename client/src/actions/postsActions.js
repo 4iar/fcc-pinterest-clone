@@ -19,6 +19,7 @@ export function receivePosts(posts) {
 
 export function fetchPosts() {
   return function (dispatch) {
+    console.log("fetching")
     dispatch(requestPosts());
     const endpoint = API_POSTS_ENDPOINT;
     axios.get(endpoint)

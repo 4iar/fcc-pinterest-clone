@@ -2,6 +2,7 @@ import initialState from './initialState';
 
 
 export default function posts(state = initialState.posts, action) {
+  console.log(action);
   switch (action.type) {
     case 'RECEIVE_POSTS': {
       return {

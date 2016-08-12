@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://pinterest-4iar.herokuapp.com";
+export const API_BASE_URL = "http://localhost:5000";
 
 // Auth
 export const API_AUTH_CALLBACK = API_BASE_URL + '/callback';

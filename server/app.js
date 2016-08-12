@@ -51,10 +51,12 @@ app.post('/api/posts', (request, response) => {
   // add auth here
   const userId = 'placeholder';
   const imageUrl = request.body.imageUrl;
+  const title = request.body.title;
   
   const post = {
     createdByUserId: userId,
     imageUrl,
+    title,
     likes: {},
     id: shortid.generate()
   };

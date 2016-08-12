@@ -47,6 +47,25 @@ app.get('/api/auth/currentuser', (request, response) => {
   }
 })
 
+app.post('/api/posts', (request, response) => {
+  // add auth here
+  const userId = 'placeholder';
+  const imageUrl = request.body.imageUrl;
+  
+  const post = {
+    createdByUserId: userId,
+    imageUrl,
+    likes: {}
+  };
+  
+  db.collection('posts').insert(post, (dbError, dbResult) => {
+    if (dbError) {
+      response.json({status: 'error', message: 'problem talking to the database'});
+    } else if (dbResult) {
+      response.json({status: 'success', message: 'post added'})
+    }
+  })
+})
 
 
 app.get('/api/posts', (request, response) => {

@@ -55,7 +55,8 @@ app.post('/api/posts', (request, response) => {
   const post = {
     createdByUserId: userId,
     imageUrl,
-    likes: {}
+    likes: {},
+    id: shortid.generate()
   };
   
   db.collection('posts').insert(post, (dbError, dbResult) => {

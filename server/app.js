@@ -91,6 +91,33 @@ app.delete('/api/post/:id', (request, response) => {
   })
 })
 
+app.patch('/api/post/:id', (request, response) => {
+  const userId = 'placeholderr2:';
+  const postId = request.params.id;
+  const choice = request.body.choice;
+  console.log(choice)
+  if (choice !== 'like' && choice !== 'unlike') {
+    response.json({status: 'error', message: 'invalid choice'});
+    return;
+  }
+
+  if (userId) {
+    const likesKey = 'likes.' + userId;
+    let likesObj = {};
+    likesObj[likesKey] = choice === 'like' ? true : false;
+
+    db.collection('posts').update({id: postId}, {$set: likesObj}, (dbError, dbResult) => {
+      if (dbError) {
+        response.json({status: 'error', message: 'problem talking to the database'});
+      } else if (dbResult) {
+        response.json({status: 'success', message: 'post was updated'});
+      }
+    })
+  } else  {
+    response.json({status: 'error', message: 'you are not logged in'});
+  }
+})
+
 
 app.get('/api/posts', (request, response) => {
   db.collection('posts').find(null, {_id: false}).toArray((dbError, dbResult) => {

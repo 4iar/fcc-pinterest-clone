@@ -4,6 +4,7 @@ import {cyan700} from 'material-ui/styles/colors';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import ActionThumbUp from 'material-ui/svg-icons/action/thumb-up';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 
@@ -22,6 +23,7 @@ export default class Post extends React.Component {
   render() {
     const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
     const liked = !!this.props.likes[this.props.userId];
+    const isOwner = this.props.createdByUserId === this.props.userId;
 
     return (
       <Card className="post">
@@ -45,6 +47,12 @@ export default class Post extends React.Component {
                 <ActionThumbUp color={liked ? cyan700 : null} primary={true}/>
               </IconButton>
             </Badge>
+
+            {isOwner &&
+            <IconButton tooltip="delete post">
+              <ActionDelete color={liked ? cyan700 : null} primary={true}/>
+            </IconButton>
+            }
           </div>
         </CardActions>
       </Card>

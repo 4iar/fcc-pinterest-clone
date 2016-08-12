@@ -48,6 +48,7 @@ export default class Posts extends React.Component {
             return (
               <Post
                 key={b.id}
+                createdByUserId={b.createdByUserId}
                 title={b.title}
                 imageUrl={b.imageUrl}
                 likes={b.likes}

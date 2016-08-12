@@ -68,6 +68,29 @@ app.post('/api/posts', (request, response) => {
   })
 })
 
+app.delete('/api/post/:id', (request, response) => {
+  const userId = 'placeholder';
+  const postId = request.params.id;
+
+  db.collection('posts').findOne({id: postId}, (dbError, dbResult) => {
+    if (dbError) {
+      response.json({status: 'error', message: 'problem talking to the database'});
+    } else if (!dbResult) {
+      response.json({status: 'error', message: 'post not found'});
+    } else if (dbResult.createdByUserId === userId) {
+      db.collection('posts').deleteOne({id: postId}, (dbError, dbResult) => {
+        if (dbError) {
+          response.json({status: 'error', message: 'problem talking to the database'});
+        } else if (dbResult) {
+          response.json({status: 'success', message: 'post deleted'});
+        }
+      })
+    } else {
+      response.json({status: 'error', message: "you cannot delete someone else's post"})
+    }
+  })
+})
+
 
 app.get('/api/posts', (request, response) => {
   db.collection('posts').find(null, {_id: false}).toArray((dbError, dbResult) => {

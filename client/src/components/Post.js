@@ -10,13 +10,18 @@ import _ from 'lodash';
 
 import '../styles/posts.scss';
 
+function getState(state) {
+  return {
+    userId: state.user.id
+  };
+}
 
-@connect(null, null)
+
+@connect(getState, null)
 export default class Post extends React.Component {
   render() {
-    console.log(this.props.likes);
     const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
-    console.log(likes);
+    const liked = !!this.props.likes[this.props.userId];
 
     return (
       <Card className="post">
@@ -36,8 +41,8 @@ export default class Post extends React.Component {
               secondary={true}
               badgeStyle={{top: 12, right: 12}}
             >
-              <IconButton onClick={console.log} tooltip="+1">
-                <ActionThumbUp secondary={true}/>
+              <IconButton tooltip="+1" disabled={!this.props.userId}>
+                <ActionThumbUp color={liked ? cyan700 : null} primary={true}/>
               </IconButton>
             </Badge>
           </div>

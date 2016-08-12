@@ -22,8 +22,8 @@ function getState(state) {
 export default class Post extends React.Component {
   render() {
     const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
-    const liked = !!this.props.likes[this.props.userId];
-    const isOwner = this.props.createdByUserId === this.props.userId;
+    const liked = !!this.props.post.likes[this.props.userId];
+    const isOwner = this.props.post.createdByUserId === this.props.userId;
 
     return (
       <Card className="post">
@@ -33,7 +33,7 @@ export default class Post extends React.Component {
         </CardMedia>
 
         <CardTitle className="title">
-          <div>{this.props.title}</div>
+          <div>{this.props.post.title}</div>
         </CardTitle>
 
         <CardActions>

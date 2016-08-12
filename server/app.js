@@ -47,6 +47,20 @@ app.get('/api/auth/currentuser', (request, response) => {
   }
 })
 
+
+
+app.get('/api/posts', (request, response) => {
+  db.collection('posts').find(null, {_id: false}).toArray((dbError, dbResult) => {
+    if (dbError) {
+      response.json({status: 'error', message: 'problem talking to the database'});
+    } else if (dbResult) {
+      response.json({status: 'success', message: 'fetched all posts', posts: dbResult});
+    }
+  })
+})
+
+
+
 app.get('*', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });

@@ -26,7 +26,7 @@ app.use(passport.session());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS, PATCH');
     next();
 });
 
@@ -49,8 +49,11 @@ app.get('/api/auth/currentuser', (request, response) => {
 })
 
 app.post('/api/posts', (request, response) => {
-  // add auth here
-  const userId = 'placeholder';
+   if (!request.user) {
+    response.json({status: 'error', message: 'not logged in'});
+  }
+  
+  const userId = request.user.id;  
   const imageUrl = request.body.imageUrl;
   const title = request.body.title;
   
@@ -77,7 +80,11 @@ app.post('/api/posts', (request, response) => {
 })
 
 app.delete('/api/post/:id', (request, response) => {
-  const userId = 'placeholder';
+  if (!request.user) {
+    response.json({status: 'error', message: 'not logged in'});
+  }
+  
+  const userId = request.user.id; 
   const postId = request.params.id;
 
   db.collection('posts').findOne({id: postId}, (dbError, dbResult) => {
@@ -100,10 +107,14 @@ app.delete('/api/post/:id', (request, response) => {
 })
 
 app.patch('/api/post/:id', (request, response) => {
-  const userId = 'placeholderr2:';
+  if (!request.user) {
+    response.json({status: 'error', message: 'not logged in'});
+  }
+  
+  const userId = request.user.id;
   const postId = request.params.id;
   const choice = request.body.choice;
-  console.log(choice)
+  
   if (choice !== 'like' && choice !== 'unlike') {
     response.json({status: 'error', message: 'invalid choice'});
     return;

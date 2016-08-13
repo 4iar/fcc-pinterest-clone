@@ -13,8 +13,14 @@ import {fetchPosts} from '../actions/postsActions';
 import {API_POSTS_ENDPOINT} from '../constants/endpoints';
 import '../styles/addpost.scss';
 
+function getState(state) {
+  return {
+    userId: state.user.id
+  };
+}
 
-@connect(null, {promptLogin, sendNotification, fetchPosts})
+
+@connect(getState, {promptLogin, sendNotification, fetchPosts})
 export default class AddPost extends React.Component {
   constructor(props) {
     super(props);

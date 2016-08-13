@@ -6,7 +6,8 @@ import HomePage from './containers/HomePage';
 
 export default (
   <Route path="/" component={Header}>
-    <IndexRedirect to="/home" />
-    <Route path="home" component={HomePage}/>
+    <IndexRedirect to="/posts" />
+    <Route path="/posts" component={HomePage}/>
+    <Route path="/posts/:id" component={HomePage}/>
   </Route>
 );

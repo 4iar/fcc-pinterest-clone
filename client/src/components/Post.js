@@ -5,7 +5,9 @@ import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import ActionThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import SocialPerson from 'material-ui/svg-icons/social/person';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import _ from 'lodash';
 import axios from 'axios';
 
@@ -42,7 +44,6 @@ export default class Post extends React.Component {
       })
   }
 
-
   render() {
     const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
     const liked = !!this.props.post.likes[this.props.userId];
@@ -76,6 +77,11 @@ export default class Post extends React.Component {
               <ActionDelete color={liked ? cyan700 : null} primary={true}/>
             </IconButton>
             }
+
+           <IconButton containerElement={<Link to={"/posts/" + this.props.post.createdByUserId}/>} tooltip="view other posts by this user">
+              <SocialPerson color={liked ? cyan700 : null} primary={true}/>
+            </IconButton>
+
           </div>
         </CardActions>
       </Card>

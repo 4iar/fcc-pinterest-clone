@@ -14,6 +14,7 @@ import axios from 'axios';
 
 import {sendNotification} from '../actions/notificationActions';
 import {fetchPosts} from '../actions/postsActions';
+import {promptLogin} from '../actions/userActions';
 import {API_POST_ENDPOINT} from '../constants/endpoints';
 import '../styles/posts.scss';
 
@@ -24,7 +25,7 @@ function getState(state) {
 }
 
 
-@connect(getState, {sendNotification, fetchPosts})
+@connect(getState, {sendNotification, fetchPosts, promptLogin})
 export default class Post extends React.Component {
   constructor(props) {
     super(props);
@@ -48,6 +49,28 @@ export default class Post extends React.Component {
       })
   }
 
+  onThumbsUpClick(liked) {
+    let choice = liked ? 'unlike' : 'like';
+    
+    if (!this.props.userId) {
+      this.props.promptLogin();
+      return;
+    }
+
+    const endpoint = API_POST_ENDPOINT + this.props.post.id;
+    axios.patch(endpoint, {choice})
+      .then((response) => {
+        if (response.data.status === 'success') {
+          console.log(response);
+          this.props.sendNotification(response.data.status, response.data.message);
+          this.props.fetchPosts();
+        } else if (response.data.success === 'error') {
+          this.props.sendNotification(response.data.status, response.data.message);
+        }
+      })
+  }
+
+
   handleImgError() {
     this.setState({
       errorImageUrl: 'https://i.imgur.com/IjNz9bj.png'
@@ -55,7 +78,9 @@ export default class Post extends React.Component {
   }
 
   render() {
-    const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
+    const likes = _.sum(_.values(this.props.post.likes).concat(0));  // hacky way to get number of true values
+    console.log(this.props.post.likes)
+    console.log(this.props.userId)
     const liked = !!this.props.post.likes[this.props.userId];
     const isOwner = this.props.post.createdByUserId === this.props.userId;
 
@@ -80,19 +105,19 @@ export default class Post extends React.Component {
               secondary={true}
               badgeStyle={{top: 12, right: 12}}
             >
-              <IconButton tooltip="+1" disabled={!this.props.userId}>
+              <IconButton tooltip={liked ? "-1" : "+1"} onClick={this.onThumbsUpClick.bind(this, liked)}>
                 <ActionThumbUp color={liked ? cyan700 : null} primary={true}/>
               </IconButton>
             </Badge>
 
             {isOwner &&
             <IconButton onClick={this.onDeleteClick.bind(this)} tooltip="delete post">
-              <ActionDelete color={liked ? cyan700 : null} primary={true}/>
+              <ActionDelete primary={true}/>
             </IconButton>
             }
 
            <IconButton containerElement={<Link to={"/posts/" + this.props.post.createdByUserId}/>} tooltip="view other posts by this user">
-              <SocialPerson color={liked ? cyan700 : null} primary={true}/>
+              <SocialPerson primary={true}/>
             </IconButton>
 
           </div>

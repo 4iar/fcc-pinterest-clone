@@ -1,12 +1,16 @@
 import React from 'react';
 
 import Posts from '../components/Posts';
+import Notifications from '../components/Notifications';
 
 
 export default class App extends React.Component {
   render() {
     return (
-      <Posts />
+      <div>
+        <Posts />
+        <Notifications />
+      </div>
     );
   }
 }

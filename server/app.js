@@ -54,6 +54,11 @@ app.post('/api/posts', (request, response) => {
   const imageUrl = request.body.imageUrl;
   const title = request.body.title;
   
+  if (!imageUrl) {
+    response.json({status: 'error', message: 'image url cannot be empty'});
+    return;
+  }
+  
   const post = {
     createdByUserId: userId,
     imageUrl,

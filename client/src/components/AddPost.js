@@ -61,7 +61,8 @@ export default class AddPost extends React.Component {
   handleChange(field, e) {
     if (field === 'imageUrl') {
       this.setState({
-        imageUrl: e.target.value
+        imageUrl: e.target.value,
+        error: ''
       });
     }
     this.postToAdd[field] = e.target.value;

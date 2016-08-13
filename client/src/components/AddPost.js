@@ -37,7 +37,6 @@ export default class AddPost extends React.Component {
     this.setState({
       waiting: true
     });
-    console.log(this.postToAdd);
 
     axios.post(API_POSTS_ENDPOINT, this.postToAdd)
       .then((data) => {
@@ -66,7 +65,8 @@ export default class AddPost extends React.Component {
   handleOpen = () => {
     this.setState({
       open: true,
-      imageUrl: ''
+      imageUrl: '',
+      error: ''
     });
     
     this.postToAdd = {
@@ -78,7 +78,13 @@ export default class AddPost extends React.Component {
   handleClose = () => {
     this.setState({open: false});
   };
-
+  
+  handleImgError() {
+    this.setState({
+      imageUrl: 'https://i.imgur.com/IjNz9bj.png',
+      error: 'broken image'
+    });
+  }
   render() {
     return (
       <div>
@@ -91,7 +97,13 @@ export default class AddPost extends React.Component {
           disabled={this.state.waiting}
         >
 
-          <img className={"image-preview"} src={this.state.imageUrl}/>
+          {this.state.imageUrl &&
+          <img
+            className={"image-preview"}
+            src={this.state.imageUrl}
+            onError={this.handleImgError.bind(this)}
+          />
+          }
 
           <TextField
             className="input"
@@ -109,7 +121,7 @@ export default class AddPost extends React.Component {
           <RaisedButton
             label="Post"
             labelPosition="before"
-            disabled={this.state.waiting}
+            disabled={this.state.waiting || this.state.error}
             primary={true}
             onClick={this.handleSubmit.bind(this)}
           />

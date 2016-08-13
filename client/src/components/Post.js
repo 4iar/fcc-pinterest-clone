@@ -28,6 +28,10 @@ function getState(state) {
 export default class Post extends React.Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      errorImageUrl: null
+    };
   }
 
   onDeleteClick() {
@@ -44,6 +48,12 @@ export default class Post extends React.Component {
       })
   }
 
+  handleImgError() {
+    this.setState({
+      errorImageUrl: 'https://i.imgur.com/IjNz9bj.png'
+    });
+  }
+
   render() {
     const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
     const liked = !!this.props.post.likes[this.props.userId];
@@ -53,7 +63,10 @@ export default class Post extends React.Component {
       <Card className="post">
 
         <CardMedia className="image" size={30} >
-          <img src="http://www.material-ui.com/images/nature-600-337.jpg"/>
+          <img
+            src={this.state.errorImageUrl || this.props.post.imageUrl}
+            onError={this.handleImgError.bind(this)}
+          />
         </CardMedia>
 
         <CardTitle className="title">

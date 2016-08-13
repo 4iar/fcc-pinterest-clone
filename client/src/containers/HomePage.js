@@ -9,7 +9,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Posts />
+        <Posts postCreatedByIdFilter={this.props.params.id} />
         <Notifications />
         <BottomNavbar postCreatedByIdFilter={this.props.params.id} />
       </div>

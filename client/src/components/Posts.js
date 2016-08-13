@@ -19,14 +19,15 @@ export default class Posts extends React.Component {
     super(props);
 
     this.state = {
-      posts: props.posts
+      posts: props.posts,
+      postCreatedByIdFilter: props.postCreatedByIdFilter ? props.postCreatedByIdFilter : null
     };
   }
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps);
     this.setState({
-      posts: newProps.posts
+      posts: newProps.posts,
+      postCreatedByIdFilter: newProps.postCreatedByIdFilter ? newProps.postCreatedByIdFilter : null
     });
   }
 
@@ -45,12 +46,14 @@ export default class Posts extends React.Component {
         >
           {this.state.posts && this.state.posts.length > 0 &&
           this.state.posts.map((b) => {
-            return (
-              <Post
-                key={b.id}
-                post={b}
-              />
-            );
+            const post = (<Post key={b.id} post={b} />)
+            if (this.state.postCreatedByIdFilter) {
+              if (this.state.postCreatedByIdFilter === b.createdByUserId) {
+                return post;
+              }
+            } else {
+              return post;
+            }
           })}
         </Masonry>
         }

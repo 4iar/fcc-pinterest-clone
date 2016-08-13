@@ -37,7 +37,7 @@ app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/broke' 
     throw new Error('user null');
   }
 
-  response.redirect("/home");
+  response.redirect("/");
 });
 
 app.get('/api/auth/currentuser', (request, response) => {

@@ -56,7 +56,6 @@ export default class Posts extends React.Component {
             }
           })}
         </Masonry>
-        }
       </div>
     );
   }

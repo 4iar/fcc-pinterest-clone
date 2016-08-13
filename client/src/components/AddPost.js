@@ -62,6 +62,11 @@ export default class AddPost extends React.Component {
   }
 
   handleOpen = () => {
+    if (!this.props.userId) {
+      this.props.promptLogin();
+      return;
+    }
+    
     this.setState({
       open: true,
       imageUrl: '',

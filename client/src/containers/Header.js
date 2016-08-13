@@ -15,7 +15,6 @@ injectTapEventPlugin();
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
-    console.log("header loaded");
     this.props.fetchPosts();
     this.props.fetchCurrentUser();
   }

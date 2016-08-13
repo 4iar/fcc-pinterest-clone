@@ -1,7 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Card, CardActions, CardHeader, CardText, CardMedia} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -68,7 +67,7 @@ export default class AddPost extends React.Component {
       imageUrl: '',
       error: ''
     });
-    
+
     this.postToAdd = {
       title: '',
       imageUrl: ''
@@ -78,7 +77,7 @@ export default class AddPost extends React.Component {
   handleClose = () => {
     this.setState({open: false});
   };
-  
+
   handleImgError() {
     this.setState({
       imageUrl: 'https://i.imgur.com/IjNz9bj.png',

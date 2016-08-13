@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardActions, CardText, CardMedia, CardTitle} from 'material-ui/Card';
+import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import {cyan700} from 'material-ui/styles/colors';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';

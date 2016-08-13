@@ -7,8 +7,12 @@ import ActionThumbUp from 'material-ui/svg-icons/action/thumb-up';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import axios from 'axios';
 
 
+import {sendNotification} from '../actions/notificationActions';
+import {fetchPosts} from '../actions/postsActions';
+import {API_POST_ENDPOINT} from '../constants/endpoints';
 import '../styles/posts.scss';
 
 function getState(state) {
@@ -18,8 +22,27 @@ function getState(state) {
 }
 
 
-@connect(getState, null)
+@connect(getState, {sendNotification, fetchPosts})
 export default class Post extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  onDeleteClick() {
+    const endpoint = API_POST_ENDPOINT + this.props.post.id;
+    axios.delete(endpoint)
+      .then((response) => {
+        if (response.data.status === 'success') {
+          console.log(response);
+          this.props.sendNotification(response.data.status, response.data.message);
+          this.props.fetchPosts();
+        } else if (response.data.success === 'error') {
+          this.props.sendNotification(response.data.status, response.data.message);
+        }
+      })
+  }
+
+
   render() {
     const likes = _.sum(_.values(this.props.likes).concat(0));  // hacky way to get number of true values
     const liked = !!this.props.post.likes[this.props.userId];
@@ -49,7 +72,7 @@ export default class Post extends React.Component {
             </Badge>
 
             {isOwner &&
-            <IconButton tooltip="delete post">
+            <IconButton onClick={this.onDeleteClick.bind(this)} tooltip="delete post">
               <ActionDelete color={liked ? cyan700 : null} primary={true}/>
             </IconButton>
             }
